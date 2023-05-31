@@ -35,6 +35,8 @@ public class SecurityServiceImpl implements SecurityService {
         return null;
     }
 
+    // Vulnerable method
+    
     @Override
     public void autologin(final String username, final String password) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
