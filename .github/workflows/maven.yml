@@ -6,28 +6,42 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
-
+name: Endor Labs Scan
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
-
-jobs:
-  build:
-
+    branches: [main]
+jobs: 
+  ci-commons-demo-scan:
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      # contents: read  # -> Required by actions/checkout@v3 if checking out a private repository
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '8'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+          cache: maven
+      - name: build with Maven
+        run: mvn -B package --pom.xml
 
+      - name: Endor Labs Scan Pull Request
+        if: github.event_name == 'pull_request'
+        uses: endorlabs/github-action@main
+        with:
+          namespace: "matt-learn"
+          scan_summary_output_type: "table"
+          ci_run: "true"
+      - name: Endor Labs Scan Push to main
+        if: github.event_name == 'push'
+        uses: endorlabs/github-action@main
+        with:
+          namespace: "matt-learn"
+          scan_summary_output_type: "table"
+          ci_run: "false"
     
