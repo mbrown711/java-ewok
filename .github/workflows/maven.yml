@@ -15,7 +15,7 @@ on:
 jobs: 
   ci-commons-demo-scan:
     permissions:
-      #id-token: write # This is required for requesting the JWT
+      id-token: write # This is required for requesting the JWT
       contents: read  # -> Required by actions/checkout@v3 if checking out a private repository
     runs-on: ubuntu-latest
     steps:
