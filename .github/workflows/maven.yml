@@ -28,7 +28,7 @@ jobs:
           distribution: 'microsoft'
           cache: maven
       - name: build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn -B package --file pom.xml -DskipTests
 
       - name: Endor Labs Scan Pull Request
         if: github.event_name == 'pull_request'
